@@ -10,6 +10,9 @@
 ![PowerBI](https://img.shields.io/badge/PowerBI-Dashboard-yellow)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 
+
+
+![SQL Server](https://github.com/ShubhayuMallick1997/Insurance-Data-Lake-ETL-Pipeline-on-AWS-Project/blob/main/Insurance%20End%20to%20End%20Pyspark%20SSIS%20AWS%20Project%20Architecture.png)
 ---
 
 # 📌 Project Overview
