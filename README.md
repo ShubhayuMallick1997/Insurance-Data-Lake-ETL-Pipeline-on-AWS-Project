@@ -1,127 +1,310 @@
-# Insurance Data Lake ETL Pipeline on AWS
+# 🏦 Insurance Data Lake ETL Pipeline on AWS
 
-A comprehensive ETL (Extract, Transform, Load) pipeline built on AWS for processing and managing insurance data at scale.
+> **An End-to-End Enterprise Data Engineering Project using SQL Server, SSIS, AWS S3, PySpark, Athena, Power BI and REST API-ready Nested JSON**
 
-## Project Overview
+![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-red)
+![SSIS](https://img.shields.io/badge/SSIS-ETL-blue)
+![AWS S3](https://img.shields.io/badge/AWS-S3-orange)
+![PySpark](https://img.shields.io/badge/PySpark-Big%20Data-yellow)
+![Athena](https://img.shields.io/badge/Amazon-Athena-green)
+![PowerBI](https://img.shields.io/badge/PowerBI-Dashboard-yellow)
+![Python](https://img.shields.io/badge/Python-3.x-blue)
 
-This project implements a robust data lake architecture on Amazon Web Services (AWS) to handle insurance data processing. The pipeline automates the extraction, transformation, and loading of data from various sources into a centralized data lake, enabling analytics, reporting, and data-driven decision making.
+---
 
-## Architecture
+# 📌 Project Overview
 
-The solution leverages the following AWS services to create a scalable, secure, and maintainable data pipeline:
+This project demonstrates an **enterprise-scale Data Engineering pipeline** for an Insurance Management System.
 
-- **AWS S3** - Data lake storage and staging areas
-- **AWS Glue** - ETL jobs and data catalog
-- **AWS Lambda** - Serverless event-driven triggers and orchestration
-- **AWS RDS/DynamoDB** - Source and target databases
-- **AWS CloudWatch** - Monitoring and logging
-- **AWS IAM** - Security and access control
-- **AWS EventBridge** - Event-driven workflows
+The objective is to simulate how insurance companies migrate operational data from a relational database into a cloud-based Data Lake, perform transformations using Apache Spark, create optimized analytical datasets, generate API-ready nested JSON documents, and prepare data for reporting and analytics.
 
-## Data Pipeline Workflow
+The project follows a modern **Lakehouse architecture**, separating the pipeline into:
 
-1. **Ingestion** - Data from insurance systems is ingested into S3 staging buckets
-2. **Validation** - Lambda functions validate data quality and format
-3. **Transformation** - AWS Glue jobs transform and enrich the data
-4. **Storage** - Processed data is stored in the data lake (S3)
-5. **Cataloging** - Data Catalog maintains metadata and schema information
-6. **Analytics** - Data is made available for analysis and reporting
+* Source Layer
+* Raw Data Lake
+* Curated Data Lake
+* Analytics Layer
+* Visualization Layer
 
-## Getting Started
+The entire project was implemented using **Microsoft SQL Server, SSIS, AWS S3, Google Colab, PySpark, Athena and Power BI.**
 
-### Prerequisites
+---
 
-- AWS Account with appropriate permissions
-- AWS CLI configured with credentials
-- Python 3.8+
-- Terraform (for infrastructure as code)
+# 🎯 Business Problem
 
-### Setup Instructions
+Insurance companies store operational data across multiple normalized relational tables such as:
 
-1. Clone the repository:
-```bash
-git clone https://github.com/ShubhayuMallick1997/Insurance-Data-Lake-ETL-Pipeline-on-AWS-Project.git
-cd Insurance-Data-Lake-ETL-Pipeline-on-AWS-Project
+* Customer
+* Policy
+* Premium Payment
+* Claims
+* Products
+* Agents
+* Notifications
+* Audit History
+
+Business Intelligence tools, Machine Learning models and REST APIs cannot efficiently consume these normalized datasets directly.
+
+Therefore, organizations typically build a Data Lake architecture to
+
+* Centralize data
+* Store multiple file formats
+* Build optimized analytical datasets
+* Generate API-ready JSON
+* Support scalable analytics
+
+This project simulates that complete workflow.
+
+---
+
+# 🏗 Solution Architecture
+
+```text
+                     SQL Server (InsuranceDB)
+                               │
+                               │
+                         Initial Data Loading
+                               │
+                               ▼
+                         SQL Server (SSMS)
+                               │
+                               ▼
+                    SSIS ETL Data Extraction
+                               │
+                               ▼
+                    Individual Excel Files
+                               │
+                               ▼
+                         AWS CLI Upload
+                               │
+                               ▼
+                 AWS S3 Raw Layer Storage
+                               │
+                               ▼
+                      Google Colab Notebook
+                               │
+                               ▼
+                 Pandas + Apache PySpark ETL
+                               │
+        ┌─────────────────────────────────────────┐
+        │                                         │
+        │   Data Validation                       │
+        │   Data Transformation                   │
+        │   DataFrame Creation                    │
+        │   Multi-format Conversion               │
+        │                                         │
+        └─────────────────────────────────────────┘
+                               │
+        ┌──────────────┬─────────────┬────────────┬──────────────┐
+        ▼              ▼             ▼            ▼
+      CSV            JSON          ORC        PARQUET
+        │              │             │            │
+        └──────────────┴─────────────┴────────────┘
+                               │
+                      AWS CLI Upload
+                               │
+                               ▼
+                    AWS S3 Curated Layer
+                               │
+             ┌─────────────────┴─────────────────┐
+             ▼                                   ▼
+       Amazon Athena                     Nested JSON APIs
+             │                                   │
+             ▼                                   ▼
+        Power BI Dashboard                REST API / Postman
 ```
 
-2. Configure AWS credentials:
-```bash
-aws configure
+---
+
+# 🚀 Technology Stack
+
+| Category           | Technology                             |
+| ------------------ | -------------------------------------- |
+| Database           | Microsoft SQL Server                   |
+| Database IDE       | SQL Server Management Studio (SSMS)    |
+| ETL Tool           | SQL Server Integration Services (SSIS) |
+| Programming        | Python                                 |
+| Big Data           | Apache Spark (PySpark)                 |
+| Notebook           | Google Colab                           |
+| Cloud Storage      | AWS S3                                 |
+| Cloud Query Engine | Amazon Athena                          |
+| File Formats       | Excel, CSV, JSON, ORC, Parquet         |
+| API Testing        | Postman                                |
+| Data Visualization | Power BI                               |
+| Version Control    | Git + GitHub                           |
+
+---
+
+# 📂 Database Schema
+
+The Insurance database contains relational tables representing customers, policies, products, claims and premium payments.
+
+```
+Customer
+│
+├── Customer Policy
+│      │
+│      ├── Policy
+│      │      │
+│      │      └── Product Policy
+│      │               │
+│      │               └── Product
+│      │
+│      ├── Premium Payment
+│      │
+│      └── Claim
+│              │
+│              └── Claim Document
+│
+├── Agent Customer
+│      │
+│      └── Agent
+│
+├── Notification
+│
+└── Customer Audit
+
+Employee
+│
+└── Branch
+
+Users
 ```
 
-3. Deploy infrastructure:
-```bash
-terraform init
-terraform plan
-terraform apply
-```
+---
 
-4. Deploy ETL jobs:
-```bash
-python deploy_glue_jobs.py
-```
-
-## Project Structure
+# 📁 Project Repository Structure
 
 ```
-.
-├── src/
-│   ├── glue_jobs/          # AWS Glue ETL job scripts
-│   ├── lambda_functions/   # Lambda function code
-│   └── utilities/          # Helper functions and utilities
-├── terraform/              # Infrastructure as Code
-├── config/                 # Configuration files
-├── tests/                  # Unit and integration tests
-├── docs/                   # Documentation
-└── README.md              # This file
+Insurance-Data-Lake-ETL-Pipeline
+
+│
+├── SQL Scripts
+│      ├── Database Creation
+│      ├── Table Creation
+│      ├── Insert Scripts
+│      ├── Stored Procedures
+│      └── Nested JSON Queries
+│
+├── SSIS Packages
+│
+├── Raw Excel Files
+│
+├── PySpark Notebooks
+│
+├── CSV Output
+│
+├── JSON Output
+│
+├── ORC Output
+│
+├── Parquet Output
+│
+├── Athena Queries
+│
+├── Power BI Dashboard
+│
+├── Images
+│
+└── README.md
 ```
 
-## Key Features
+---
 
-- **Scalability** - Handles large volumes of insurance data
-- **Automation** - Event-driven triggers minimize manual intervention
-- **Data Quality** - Built-in validation and error handling
-- **Security** - IAM policies and encryption for data protection
-- **Monitoring** - CloudWatch dashboards and alerts
-- **Cost Optimization** - Efficient resource utilization with serverless architecture
+# 📊 Project Workflow
 
-## Configuration
+```
+SQL Server
+      │
+      ▼
+SSMS
+      │
+      ▼
+SSIS
+      │
+      ▼
+Excel Files
+      │
+      ▼
+AWS CLI
+      │
+      ▼
+AWS S3 Raw Layer
+      │
+      ▼
+Google Colab
+      │
+      ▼
+PySpark
+      │
+      ▼
+CSV
+JSON
+ORC
+PARQUET
+      │
+      ▼
+AWS CLI
+      │
+      ▼
+AWS S3 Curated Layer
+      │
+      ▼
+Amazon Athena
+      │
+      ▼
+Power BI
+```
 
-Configuration settings can be found in `config/` directory:
-- `config.yaml` - Main configuration file
-- `aws_config.json` - AWS-specific settings
-- `.env` - Environment variables (not committed to version control)
+---
 
-## Monitoring and Logging
+# ⭐ Project Highlights
 
-Monitor pipeline execution through:
-- **CloudWatch Logs** - Application and job logs
-- **CloudWatch Dashboards** - Real-time metrics and KPIs
-- **AWS Glue Dashboard** - Job status and performance metrics
+* Enterprise ETL Pipeline
+* Cloud-based Data Lake Architecture
+* SQL Server + SSIS Integration
+* AWS S3 Raw & Curated Layers
+* PySpark Data Processing
+* Multi-format Data Conversion
+* Amazon Athena Query Engine
+* Nested JSON Generation using SQL Server
+* Power BI Analytics
+* REST API-ready Data Model
 
-## Contributing
+---
 
-Contributions are welcome! Please follow these steps:
+## 📌 Current Project Status
 
-1. Create a new branch for your feature
-2. Make your changes and add tests
-3. Submit a pull request with a clear description
+✅ Database Designed
 
-## Troubleshooting
+✅ Tables Created
 
-For common issues and solutions, please refer to [TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)
+✅ Initial Data Loading Completed
 
-## License
+✅ SSIS Data Extraction Completed
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+✅ Excel Generation Completed
 
-## Contact
+✅ AWS S3 Raw Layer Completed
 
-For questions or support, please contact the project maintainer or open an issue on GitHub.
+✅ Google Colab Integration Completed
 
-## References
+✅ PySpark DataFrame Creation Completed
 
-- [AWS Glue Documentation](https://docs.aws.amazon.com/glue/)
-- [AWS Lambda Documentation](https://docs.aws.amazon.com/lambda/)
-- [AWS S3 Documentation](https://docs.aws.amazon.com/s3/)
-- [AWS Data Lake Best Practices](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/data-lake-overview.html)
+✅ CSV Generation Completed
+
+✅ JSON Generation Completed
+
+✅ ORC Generation Completed
+
+✅ Parquet Generation Completed
+
+✅ Curated Files Uploaded to AWS S3
+
+⬜ Athena Analytics (In Progress)
+
+⬜ Power BI Dashboard (Planned)
+
+⬜ REST API Development (Planned)
+
+⬜ Final Documentation (In Progress)
